@@ -2,7 +2,7 @@ const container = document.querySelector('#container')
 const fileInput = document.querySelector('#file-input')
 
 async function loadTrainingData() {
-    const labels = ['Fukada Eimi', 'Takizawa Laura', 'Yua Mikami', 'Son Tung MTP'];
+    const labels = ['Son Tung MTP', 'Justina Xie', 'Rose', 'BRay'];
 
     const faceDescriptors = [];
     for (const label of labels) {
@@ -31,7 +31,7 @@ async function init() {
     ])
 
     const trainingData = await loadTrainingData();
-    faceMatcher = new faceapi.FaceMatcher(trainingData, 0.6);
+    faceMatcher = new faceapi.FaceMatcher(trainingData, 0.5);
 
     Toastify({
         text: 'Đã tải xong model nhận diện'
@@ -52,10 +52,12 @@ fileInput.addEventListener('change', async (e) => {
 
     const size = { width: image.width, height: image.height }
     faceapi.matchDimensions(canvas, size);
-
     faceapi.matchDimensions(canvas, size);
 
-    const detection = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors();
+    const detection = await faceapi
+        .detectAllFaces(image)
+        .withFaceLandmarks() // Lấy 68 điểm trên khuôn mặt
+        .withFaceDescriptors();
     const resizedDetection = faceapi.resizeResults(detection, size);
 
     for (const detection of resizedDetection) {
