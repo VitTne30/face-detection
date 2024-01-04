@@ -2,7 +2,7 @@ const container = document.querySelector('#container')
 const fileInput = document.querySelector('#file-input')
 
 async function loadTrainingData() {
-    const labels = ['Fukada Eimi', 'Takizawa Laura', 'Yua Mikami', 'Son Tung MTP'];
+    const labels = ['Fukada Eimi', 'Takizawa Laura', 'Yua Mikami', 'Son Tung MTP', 'Hieuthuhai'];
 
     const faceDescriptors = [];
     for (const label of labels) {
