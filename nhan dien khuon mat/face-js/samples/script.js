@@ -2,7 +2,7 @@ const container = document.querySelector('#container')
 const fileInput = document.querySelector('#file-input')
 
 async function loadTrainingData() {
-    const labels = ['Fukada Eimi', 'Takizawa Laura', 'Yua Mikami', 'Son Tung MTP', 'Hieuthuhai'];
+    const labels = ['Son Tung MTP', 'Hieuthuhai'];
 
     const faceDescriptors = [];
     for (const label of labels) {
@@ -53,13 +53,18 @@ fileInput.addEventListener('change', async (e) => {
     const size = { width: image.width, height: image.height }
     faceapi.matchDimensions(canvas, size);
 
-    faceapi.matchDimensions(canvas, size);
+    const detectionsWithLandmarks = await faceapi.detectAllFaces(image).withFaceLandmarks()
+    const resizedResults = faceapi.resizeResults(detectionsWithLandmarks, size)
 
     const detection = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors();
     const resizedDetection = faceapi.resizeResults(detection, size);
 
     for (const detection of resizedDetection) {
         const box = detection.detection.box;
+
+        faceapi.draw.drawDetections(canvas, resizedResults)
+        faceapi.draw.drawFaceLandmarks(canvas, resizedResults)
+
         const drawBox = new faceapi.draw.DrawBox(box, {
             label: faceMatcher.findBestMatch(detection.descriptor)
         })
